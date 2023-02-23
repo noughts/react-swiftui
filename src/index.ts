@@ -1,1 +1,1 @@
-export * from "./components/VStack"
+export {default as VStack } from "./components/VStack"

@@ -1,6 +1,8 @@
 {
   "name": "react-swiftui",
-  "version": "0.4.1",
+  "version": "0.4.3",
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
