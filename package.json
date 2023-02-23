@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "npm": "npx tsc --jsx react-jsx; npm version patch; npm publish"
+    "npm": "npm version patch; npx tsc --jsx react-jsx;"
   },
   "dependencies": {
     "@next/font": "13.1.6",
