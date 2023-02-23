@@ -1,1 +1,2 @@
-export {default as VStack } from "./components/VStack"
+export * from "./components/VStack"
+export * from "./components/HStack"
