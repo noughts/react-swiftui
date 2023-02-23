@@ -13,6 +13,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
+import { jsx as _jsx } from "react/jsx-runtime";
 import React from "react";
 var VStack = /** @class */ (function (_super) {
     __extends(VStack, _super);
@@ -20,9 +21,9 @@ var VStack = /** @class */ (function (_super) {
         return _super !== null && _super.apply(this, arguments) || this;
     }
     VStack.prototype.render = function () {
-        return <div>this is VStack</div>;
+        return _jsx("div", { children: "this is VStack" });
     };
     return VStack;
 }(React.Component));
 export default VStack;
-//# sourceMappingURL=VStack.jsx.map
+//# sourceMappingURL=VStack.js.map
