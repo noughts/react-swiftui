@@ -19,7 +19,7 @@
     "jsx": "react-jsx",
     "incremental": true,
     "baseUrl": ".",
-    "outDir": "./dist",
+    "outDir": "dist",
     "sourceMap": true,
     "declaration": true,
     "paths": {
@@ -34,6 +34,7 @@
     "**/*.tsx"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "dist"
   ]
 }
