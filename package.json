@@ -8,6 +8,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
+    "npmadduser": "npm adduser",
     "npm": "npm version patch; npx tsc --jsx react-jsx; npm publish;"
   },
   "dependencies": {
