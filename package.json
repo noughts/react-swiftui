@@ -1,21 +1,23 @@
 {
   "name": "react-swiftui",
-  "version": "0.4.14",
+  "version": "0.4.36",
   "main": "dist/index.js",
   "module": "dist/index.js",
+  "license": "MIT",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "npmadduser": "npm adduser",
-    "npm": "npm version patch; npx tsc --jsx react-jsx; npm publish;"
+    "npm": "npm version patch && npx tsc --jsx react-jsx --module commonjs && npm publish;"
   },
   "dependencies": {
     "@next/font": "13.1.6",
     "@types/node": "18.14.0",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "framer-motion": "^9.0.7",
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
