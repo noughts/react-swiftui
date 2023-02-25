@@ -1,9 +1,10 @@
-import { motion } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import React, { CSSProperties } from "react";
-import NavigationEvent from "./NavigationEvent";
+import { NavigationContext, SceneContext } from "./SceneContext";
 
 export default class NavigationView extends React.Component<{
 	style?: CSSProperties;
+	children?: any;
 }, {
 	stack: any[];
 }>{
@@ -16,46 +17,34 @@ export default class NavigationView extends React.Component<{
 		this.state = {
 			stack: [page],
 		}
-		this.onPushLinkClick = this.onPushLinkClick.bind(this);
-		this.onPopLinkClick = this.onPopLinkClick.bind(this);
+		this.push = this.push.bind(this);
+		this.pop = this.pop.bind(this);
 	}
 
-	componentDidMount() {
-		addEventListener("push", this.onPushLinkClick);
-		addEventListener("pop", this.onPopLinkClick);
-	}
-
-	componentWillUnmount() {
-		removeEventListener("push", this.onPushLinkClick);
-		removeEventListener("pop", this.onPopLinkClick);
-	}
-
-	onPushLinkClick(e: NavigationEvent) {
+	push(element: React.ReactElement) {
 		const newAry = this.state.stack;
-		const newPage = this.createPageView(e.destination);
+		const newPage = this.createPageView(element);
 		newAry.push(newPage);
 		this.setState({ stack: newAry })
 	}
-	onPopLinkClick(e: NavigationEvent) {
-		console.log(e)
+	pop() {
+		const newAry = this.state.stack;
+		newAry.pop();
+		this.setState({ stack: newAry })
 	}
 
 	createPageView(content: any) {
-		let initX = 0;
-		if( this.root_ref.current ){
-			initX = this.root_ref.current.clientWidth;
-		}
+		const initX = this.root_ref.current ? this.root_ref.current.clientWidth : 0;
 		const key = this.state ? this.state.stack.length : 0;
 		return <motion.div
 			key={key}
 			animate={{
 				x: 0,
 			}}
-			initial={{
-				x: initX,
-			}}
+			initial={{ x: initX }}
+			exit={{ x: initX }}
 			transition={{
-				ease:"easeOut"
+				ease: "easeOut"
 			}}
 			style={{
 				position: "absolute",
@@ -71,18 +60,26 @@ export default class NavigationView extends React.Component<{
 	render() {
 		const p = this.props;
 		let style: CSSProperties = {
-			position:"relative",
-			width:"100%",
-			height:"100%",
+			position: "relative",
+			width: "100%",
+			height: "100%",
 		};
 		if (p.style) {
 			style = Object.assign(style, p.style);
 		}
 
 		return <div ref={this.root_ref} className="NavigationView" style={style}>
-			{this.state.stack.map(x => {
-				return x;
-			})}
+			<NavigationContext.Provider value={{
+				push: this.push,
+				pop: this.pop,
+			}}>
+				{/* AnimatePresenceによって、exit アニメーションを有効に出来ます */}
+				<AnimatePresence>
+					{this.state.stack.map(x => {
+						return x;
+					})}
+				</AnimatePresence>
+			</NavigationContext.Provider>
 		</div>
 	}
 }
