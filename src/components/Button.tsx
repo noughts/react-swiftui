@@ -2,7 +2,7 @@ import React, { CSSProperties } from "react";
 
 
 export default class Button extends React.Component<{
-	buttonStyle: "bordered" | "borderless" | "borderedProminent"
+	buttonStyle?: "bordered" | "borderless" | "borderedProminent"
 	action?: Function;
 	label: string;
 	flexGrow?: number;
@@ -17,7 +17,7 @@ export default class Button extends React.Component<{
 		const p = this.props;
 		const style: CSSProperties = {
 			border: "none",
-			backgroundColor:"white",
+			backgroundColor:"transparent",
 			fontSize:15,
 			fontWeight: "bold",
 			color: "var(--key-color)",
