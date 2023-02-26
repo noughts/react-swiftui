@@ -58,13 +58,13 @@ export default class Scene extends React.Component<{
 				return { opacity: 1 };
 			case AnyTransition.slide:
 			default:
-				if (content.props.detent == Detent.large) {
-					return { translateY: 0 };
-				} else {
-					return { translateY: this.root_ref.current.clientHeight / 2 };
+				switch(content.props.detent){
+					case Detent.medium:
+						return { translateY: this.root_ref.current.clientHeight / 2 };
+					case Detent.large:
+					default:
+						return { translateY: 0 };
 				}
-
-
 		}
 	}
 

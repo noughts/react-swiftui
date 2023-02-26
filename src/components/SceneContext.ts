@@ -2,7 +2,7 @@ import React from "react"
 import { Detent } from "./ViewProps";
 type SceneContextType = {
 	testString?: string;
-	present?: (content: React.ReactElement, detent?: Detent) => void;
+	present?: (content: React.ReactElement) => void;
 	setDetent?: (detent: Detent) => void;
 	dismiss?: Function;
 }
