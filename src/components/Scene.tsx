@@ -9,7 +9,7 @@ export default class Scene extends React.Component<{
 	style?: CSSProperties;
 	children?: any;
 }, {
-	stack: any[];
+	stack: React.ReactElement[];
 }>{
 
 	root_ref = React.createRef<HTMLDivElement>();
@@ -34,6 +34,13 @@ export default class Scene extends React.Component<{
 		const newAry = this.state.stack;
 		newAry.pop();
 		this.setState({ stack: newAry })
+	}
+	setDetent(detent: Detent) {
+
+	}
+
+	topView(): React.ReactElement {
+		return this.state.stack[this.state.stack.length - 1];
 	}
 
 	private _initial(content: React.ReactElement<ViewProps>) {
@@ -70,7 +77,7 @@ export default class Scene extends React.Component<{
 
 	private get shadeView() {
 		return <motion.div
-			onClick={e=>{
+			onClick={e => {
 				this.dismiss();
 			}}
 			initial={{ opacity: 0 }}
@@ -80,7 +87,7 @@ export default class Scene extends React.Component<{
 				ease: "easeOut",
 			}}
 			style={{
-				backgroundColor:"black",
+				backgroundColor: "black",
 				position: "absolute",
 				width: "100%",
 				height: "100%",
@@ -109,6 +116,7 @@ export default class Scene extends React.Component<{
 					width: "100%",
 					height: "100%",
 					zIndex: key,
+					overflow: "hidden",
 				}}>
 				{content}
 			</motion.div>
