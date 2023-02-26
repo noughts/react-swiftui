@@ -16,7 +16,7 @@ export default class Scene extends React.Component<{
 
 	constructor(p) {
 		super(p);
-		const page = this.createPageView(p.children);
+		const page = this.createView(p.children);
 		this.state = {
 			stack: [page],
 		}
@@ -26,7 +26,7 @@ export default class Scene extends React.Component<{
 
 	present(content: React.ReactElement<ViewProps>) {
 		const newAry = this.state.stack;
-		const newPage = this.createPageView(content);
+		const newPage = this.createView(content);
 		newAry.push(newPage);
 		this.setState({ stack: newAry })
 	}
@@ -36,7 +36,7 @@ export default class Scene extends React.Component<{
 		this.setState({ stack: newAry })
 	}
 
-	_initial(content: React.ReactElement<ViewProps>) {
+	private _initial(content: React.ReactElement<ViewProps>) {
 		if (!this.state) {
 			return {};
 		}
@@ -49,7 +49,7 @@ export default class Scene extends React.Component<{
 
 		}
 	}
-	_animate(content: React.ReactElement<ViewProps>) {
+	private _animate(content: React.ReactElement<ViewProps>) {
 		if (!this.state) {
 			return {};
 		}
@@ -58,7 +58,7 @@ export default class Scene extends React.Component<{
 				return { opacity: 1 };
 			case AnyTransition.slide:
 			default:
-				switch(content.props.detent){
+				switch (content.props.detent) {
 					case Detent.medium:
 						return { translateY: this.root_ref.current.clientHeight / 2 };
 					case Detent.large:
@@ -68,27 +68,51 @@ export default class Scene extends React.Component<{
 		}
 	}
 
-	createPageView(content: React.ReactElement<ViewProps>) {
-		const key = this.state ? this.state.stack.length : 0;
-		const initial = this._initial(content);
-		const animate = this._animate(content);
+	private get shadeView() {
 		return <motion.div
-			key={key}
-			initial={initial}
-			animate={animate}
-			exit={initial}
+			onClick={e=>{
+				this.dismiss();
+			}}
+			initial={{ opacity: 0 }}
+			animate={{ opacity: 0.5 }}
+			exit={{ opacity: 0 }}
 			transition={{
 				ease: "easeOut",
-				// duration:1,
 			}}
 			style={{
+				backgroundColor:"black",
 				position: "absolute",
 				width: "100%",
 				height: "100%",
-				zIndex: key,
+				zIndex: 0,
 			}}>
-			{content}
 		</motion.div>
+	}
+
+
+	private createView(content: React.ReactElement<ViewProps>) {
+		const key = this.state ? this.state.stack.length : 0;
+		const initial = this._initial(content);
+		const animate = this._animate(content);
+		return <div key={key}>
+			{this.shadeView}
+			<motion.div
+				initial={initial}
+				animate={animate}
+				exit={initial}
+				transition={{
+					ease: "easeOut",
+					// duration:1,
+				}}
+				style={{
+					position: "absolute",
+					width: "100%",
+					height: "100%",
+					zIndex: key,
+				}}>
+				{content}
+			</motion.div>
+		</div>
 	}
 
 	render() {
