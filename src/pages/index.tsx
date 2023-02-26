@@ -29,7 +29,7 @@ class HomeView extends React.Component<{
 	declare context: React.ContextType<typeof SceneContext>;
 
 	render(): React.ReactNode {
-		return <VStack alignment={"center"} style={{ height: 400 }}>
+		return <VStack alignment={"center"}>
 			<div>{this.props.text}</div>
 			<button onClick={e => {
 				this.context.present(<ArticleList detent={Detent.medium} />);
