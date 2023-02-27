@@ -28,22 +28,24 @@ export default class TabView extends React.Component<{
 
 	render() {
 		const selectedItem = this.props.items[this.state.selectedIndex];
-		return <VStack alignment={"stretch"} style={{
-			height: "calc(var(--vh, 1vh) * 100)",
-		}}>
-			<div style={{
-				flexGrow: 2,
-				overflow: "hidden"
+		return <div className="TabView" style={{zIndex:1,position:"relative"}}>
+			<VStack alignment={"stretch"} style={{
+				height: "calc(var(--vh, 1vh) * 100)",
 			}}>
-				{selectedItem.content}
-			</div>
-			<TabBar
-				items={this.props.items}
-				selectedIndex={this.state.selectedIndex}
-				onClick={e => {
-					this.setState({ selectedIndex: e });
-				}} />
-		</VStack>
+				<div style={{
+					flexGrow: 2,
+					overflow: "hidden"
+				}}>
+					{selectedItem.content}
+				</div>
+				<TabBar
+					items={this.props.items}
+					selectedIndex={this.state.selectedIndex}
+					onClick={e => {
+						this.setState({ selectedIndex: e });
+					}} />
+			</VStack>
+		</div>
 	}
 }
 
@@ -100,9 +102,9 @@ class TabBarButton extends React.Component<{
 					textAlign: "center",
 					fontWeight: "bold",
 					color: this.props.selected ? "var(--key-color)" : "#999999",
-					textOverflow:"ellipsis",
-					whiteSpace:"nowrap",
-					overflow:"hidden"
+					textOverflow: "ellipsis",
+					whiteSpace: "nowrap",
+					overflow: "hidden"
 				}}>{item.title}</div>
 			</VStack>
 		</>

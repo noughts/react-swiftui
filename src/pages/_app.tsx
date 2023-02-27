@@ -47,6 +47,7 @@ export default class MyApp extends React.Component<{
 			<style jsx>{`
 				.app{
 					width: 100%;
+					height:100%;
 					max-width: 480px;
 					margin-left: auto;
 					margin-right: auto;

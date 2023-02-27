@@ -2,12 +2,16 @@ import { AnimatePresence, motion } from "framer-motion";
 import React, { CSSProperties, ReactNode } from "react";
 import Button from "./Button";
 import HStack from "./HStack";
-import { NavigationContext } from "./SceneContext";
 import Spacer from "./Spacer";
 import { ViewProps } from "./ViewProps";
 import VStack from "./VStack";
 
-export class NavigationView extends React.Component<{
+export const NavigationContext = React.createContext<{
+	push?: (content: React.ReactElement) => void;
+	pop?: Function;
+}>({});
+
+export class NavigationView extends React.Component<ViewProps & {
 	style?: CSSProperties;
 	children?: React.ReactElement<ViewProps>;
 }, {
