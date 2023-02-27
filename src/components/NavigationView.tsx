@@ -1,30 +1,37 @@
 import { AnimatePresence, motion } from "framer-motion";
-import React, { CSSProperties } from "react";
-import { NavigationContext, SceneContext } from "./SceneContext";
+import React, { CSSProperties, ReactNode } from "react";
+import Button from "./Button";
+import HStack from "./HStack";
+import { NavigationContext } from "./SceneContext";
+import Spacer from "./Spacer";
+import { ViewProps } from "./ViewProps";
+import VStack from "./VStack";
 
-export default class NavigationView extends React.Component<{
+export class NavigationView extends React.Component<{
 	style?: CSSProperties;
-	children?: any;
+	children?: React.ReactElement<ViewProps>;
 }, {
 	stack: any[];
+	windowWidth: number;
 }>{
-
-	root_ref = React.createRef<HTMLDivElement>();
 
 	constructor(p) {
 		super(p);
-		const page = this.createPageView(p.children);
 		this.state = {
-			stack: [page],
+			stack: [p.children],
+			windowWidth: 0,
 		}
 		this.push = this.push.bind(this);
 		this.pop = this.pop.bind(this);
 	}
 
-	push(element: React.ReactElement) {
+	componentDidMount(): void {
+		this.setState({ windowWidth: window.innerWidth });
+	}
+
+	push(view: React.ReactElement) {
 		const newAry = this.state.stack;
-		const newPage = this.createPageView(element);
-		newAry.push(newPage);
+		newAry.push(view);
 		this.setState({ stack: newAry })
 	}
 	pop() {
@@ -33,28 +40,24 @@ export default class NavigationView extends React.Component<{
 		this.setState({ stack: newAry })
 	}
 
-	createPageView(content: any) {
-		const initX = this.root_ref.current ? this.root_ref.current.clientWidth : 0;
-		const key = this.state ? this.state.stack.length : 0;
-		return <motion.div
-			key={key}
-			animate={{
-				x: 0,
-			}}
-			initial={{ x: initX }}
-			exit={{ x: initX }}
-			transition={{
-				ease: "easeOut"
-			}}
-			style={{
-				position: "absolute",
-				width: "100%",
-				height: "100%",
-				backgroundColor: "white",
-				zIndex: key,
-			}}>
-			{content}
-		</motion.div>
+	get topView(): React.ReactElement<ViewProps> {
+		return this.state.stack[this.state.stack.length - 1];
+	}
+
+	// 特に指定されていなければ Back ボタンを表示
+	get leftBarButtonItem() {
+		if (this.topView.props.leftBarButtonItem) {
+			return this.topView.props.leftBarButtonItem;
+		}
+		if (this.state.stack.length <= 1) {
+			return null;
+		}
+		return <NavigationContext.Consumer>{context =>
+			<Button label="< Back" action={e => {
+				context.pop();
+			}} />
+		}</NavigationContext.Consumer>
+
 	}
 
 	render() {
@@ -68,20 +71,78 @@ export default class NavigationView extends React.Component<{
 			style = Object.assign(style, p.style);
 		}
 
-		return <div ref={this.root_ref} className="NavigationView" style={style}>
+		return <div className="NavigationView" style={style}>
 			<NavigationContext.Provider value={{
 				push: this.push,
 				pop: this.pop,
 			}}>
-				{/* AnimatePresenceによって、exit アニメーションを有効に出来ます */}
-				<AnimatePresence>
-					{this.state.stack.map(x => {
-						return x;
-					})}
-				</AnimatePresence>
+				<VStack style={{
+					height: "100%",
+				}}>
+					<NavigationBar
+						rightItem={this.topView.props.rightBarButtonItem}
+						leftItem={this.leftBarButtonItem}
+					/>
+					<div style={{
+						position: "relative",
+						flexGrow: 2,
+					}}>
+						{/* AnimatePresenceによって、exit アニメーションを有効に出来ます */}
+						<AnimatePresence>
+							{this.state.stack.map((x, i) => {
+								return <View key={i} windowWidth={this.state.windowWidth}>{x}</View>;
+							})}
+						</AnimatePresence>
+					</div>
+				</VStack>
 			</NavigationContext.Provider>
 		</div>
 	}
 }
 
 
+class View extends React.Component<{
+	children;
+	windowWidth: number;
+}>{
+	render(): React.ReactNode {
+		const initX = this.props.windowWidth;
+		return <motion.div
+			animate={{ x: 0 }}
+			initial={{ x: initX }}
+			exit={{ x: initX }}
+			transition={{
+				ease: "easeOut"
+			}}
+			style={{
+				position: "absolute",
+				width: "100%",
+				height: "100%",
+				backgroundColor: "white",
+			}}>
+			{this.props.children}
+		</motion.div>
+	}
+}
+
+
+
+class NavigationBar extends React.Component<{
+	leftItem?: ReactNode;
+	rightItem?: ReactNode;
+}>{
+	render(): React.ReactNode {
+		const p = this.props;
+		return <HStack style={{
+			height: 44,
+			flexShrink: 0,
+			backgroundColor: "var(--bg-color)",
+			// borderTop: "solid 0.5px var(--separator)",
+			borderBottom: "solid 0.5px var(--separator)"
+		}}>
+			{p.leftItem}
+			<Spacer />
+			{p.rightItem}
+		</HStack>
+	}
+}

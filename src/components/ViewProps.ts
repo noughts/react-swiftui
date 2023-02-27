@@ -1,4 +1,4 @@
-import React from "react"
+import React, { ReactNode } from "react"
 
 export enum AnyTransition{
 	opacity,
@@ -11,6 +11,14 @@ export enum Detent {
 }
 
 export interface ViewProps {
-	transition?:AnyTransition;
-	detent?:Detent;
+	// transition?:AnyTransition;
+	// detent?:Detent;
+	// navigationItem?:NavigationItem;
+	rightBarButtonItem?:ReactNode;
+	leftBarButtonItem?:ReactNode;
 }
+
+// export class NavigationItem{
+// 	rightItem?:ReactNode;
+// 	leftItem?:ReactNode;
+// }

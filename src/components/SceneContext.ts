@@ -1,3 +1,12 @@
+/*
+
+HOW TO USE
+
+static contextType = NavigationContext;
+declare context: React.ContextType<typeof NavigationContext>;
+
+*/
+
 import React from "react"
 import { Detent } from "./ViewProps";
 type SceneContextType = {

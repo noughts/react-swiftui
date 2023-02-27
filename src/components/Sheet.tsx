@@ -3,6 +3,7 @@ import React, { ReactNode } from "react"
 import { Detent, AnyTransition } from "./ViewProps";
 
 
+
 export class Sheet extends React.Component<{
 	children: ReactNode;
 	isPresented: boolean;
@@ -51,7 +52,7 @@ export class Sheet extends React.Component<{
 		</motion.div>
 	}
 
-	private get _height(){
+	private get _height() {
 		const p = this.props;
 		switch (p.detent) {
 			case Detent.medium:
@@ -68,7 +69,7 @@ export class Sheet extends React.Component<{
 				return { opacity: 0 };
 			case AnyTransition.slide:
 			default:
-				return { translateY: this.state.windowHeight, height:this._height };
+				return { translateY: this.state.windowHeight, height: this._height };
 
 		}
 	}
@@ -95,6 +96,7 @@ export class Sheet extends React.Component<{
 		}
 	}
 
+
 	render(): React.ReactNode {
 		const p = this.props;
 		const initial = this._initial;
@@ -107,7 +109,7 @@ export class Sheet extends React.Component<{
 					left: 0,
 					width: "100%",
 					height: "100%",
-					zIndex:100,
+					zIndex: 100,
 				}}>
 					{this.shadeView}
 					<motion.div
@@ -121,6 +123,7 @@ export class Sheet extends React.Component<{
 							position: "absolute",
 							width: "100%",
 							overflow: "hidden",
+							borderRadius:"10px 10px 0 0",
 							zIndex: 0,
 						}}>{p.children}
 					</motion.div>
