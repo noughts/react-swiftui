@@ -143,7 +143,7 @@ class NavigationBar extends React.Component<{
 		return <HStack style={{
 			position: "relative",
 			height: 44,
-			padding: "0 8px",
+			padding: "0 16px",
 			flexShrink: 0,
 			backgroundColor: "var(--bg-color)",
 			borderBottom: "solid 0.5px var(--separator)"

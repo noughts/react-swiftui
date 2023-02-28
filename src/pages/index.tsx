@@ -1,8 +1,8 @@
 import { NavigationContext } from "@/components/NavigationView";
-import { SceneContext } from "@/components/Scene";
+import { Scene, SceneContext } from "@/components/Scene";
 import { Detent, ViewProps } from "@/components/ViewProps";
 import React from "react";
-import { Button, HStack, NavigationView, Scene, TabItem, TabView, VStack } from "..";
+import { Button, HStack, NavigationView, TabItem, TabView, VStack } from "..";
 
 
 export default class IndexPage extends React.PureComponent {
@@ -69,9 +69,9 @@ class ArticleList extends React.Component<ViewProps & {
 				<button onClick={e => {
 					sceneContext.dismiss();
 				}}>Dismiss</button>
-				<button onClick={e => { 
+				<button onClick={e => {
 					sceneContext.changeDetent(Detent.large);
-				 }}>Expand</button>
+				}}>Expand</button>
 				{ary.map(x => {
 					return <ArticleCell id={x} key={x} onClick={e => {
 						sceneContext.changeDetent(Detent.large)

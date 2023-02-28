@@ -21,18 +21,21 @@ export default class Button extends React.Component<{
 			fontSize:15,
 			fontWeight: "bold",
 			color: "var(--key-color)",
-			borderRadius: 4,
-			padding: 8,
 			lineHeight: 1,
+			padding:0,
 			flexGrow: p.flexGrow,
 		}
 		switch (p.buttonStyle) {
 			case "bordered":
 				style.backgroundColor = "gray";
+				style.padding = 8;
+				style.borderRadius = 4;
 				break;
 			case "borderedProminent":
 				style.backgroundColor = "var(--key-color)";
 				style.color = "white";
+				style.padding = 8;
+				style.borderRadius = 4;
 				break;
 		}
 		return <button style={style} onClick={e => {
