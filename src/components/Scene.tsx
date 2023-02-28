@@ -160,7 +160,8 @@ class View extends React.Component<{
 					position: "absolute",
 					width: "100%",
 					height: "100%",
-					backgroundColor: "white",
+					borderRadius:"8px 8px 0 0",
+					overflow:"hidden",
 				}}>
 				{this.props.children}
 			</motion.div>
