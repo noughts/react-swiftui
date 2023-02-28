@@ -30,7 +30,7 @@ class HomeView extends React.Component<{
 				<div>{this.props.text}</div>
 				<button onClick={e => {
 					sceneContext.present(
-						<NavigationView detent={Detent.medium}>
+						<NavigationView title="Sources" detent={Detent.medium}>
 							<ArticleList />
 						</NavigationView>)
 				}}>Present</button>

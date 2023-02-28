@@ -13,6 +13,7 @@ export enum Detent {
 export interface ViewProps {
 	// transition?:AnyTransition;
 	detent?:Detent;
+	title?:string;
 	rightBarButtonItem?:ReactNode;
 	leftBarButtonItem?:ReactNode;
 }
