@@ -60,7 +60,7 @@ export class Scene extends React.Component<{
 			position: "relative",
 			width: "100%",
 			height: "100%",
-			zIndex:1,
+			zIndex:1,// スタッキングコンテキスト作成
 		}}>
 			<SceneContext.Provider value={{
 				present: this.present,
@@ -146,7 +146,7 @@ class View extends React.Component<{
 			left: 0,
 			width: "100%",
 			height: "100%",
-			zIndex:1,
+			zIndex:1,// スタッキングコンテキスト作成
 		}}>
 			<ShadeView />
 			<motion.div
