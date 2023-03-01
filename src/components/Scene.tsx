@@ -25,12 +25,22 @@ export class Scene extends React.Component<{
 			detent: Detent.large,
 			windowHeight: 0,
 		}
+		this.onWindowResized = this.onWindowResized.bind(this);
 		this.present = this.present.bind(this);
 		this.dismiss = this.dismiss.bind(this);
 		this.changeDetent = this.changeDetent.bind(this);
 	}
 
-	componentDidMount(): void {
+	componentDidMount() {
+		window.addEventListener('resize', this.onWindowResized);
+		this.onWindowResized();
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.onWindowResized);
+	}
+
+	onWindowResized() {
 		this.setState({ windowHeight: window.innerHeight });
 	}
 
@@ -60,7 +70,7 @@ export class Scene extends React.Component<{
 			position: "relative",
 			width: "100%",
 			height: "100%",
-			zIndex:1,
+			zIndex:1,// スタッキングコンテキスト作成
 		}}>
 			<SceneContext.Provider value={{
 				present: this.present,
@@ -146,7 +156,7 @@ class View extends React.Component<{
 			left: 0,
 			width: "100%",
 			height: "100%",
-			zIndex:1,
+			zIndex:1,// スタッキングコンテキスト作成
 		}}>
 			<ShadeView />
 			<motion.div
@@ -160,7 +170,8 @@ class View extends React.Component<{
 					position: "absolute",
 					width: "100%",
 					height: "100%",
-					backgroundColor: "white",
+					borderRadius:"8px 8px 0 0",
+					overflow:"hidden",
 				}}>
 				{this.props.children}
 			</motion.div>

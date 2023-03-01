@@ -1,6 +1,6 @@
 {
   "name": "react-swiftui",
-  "version": "0.5.4",
+  "version": "0.5.12",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "license": "MIT",
@@ -9,7 +9,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "npmadduser": "npm adduser",
+    "npmlogin": "npm login --auth-type web",
     "npm": "npm version patch && npx tsc --jsx react-jsx --module commonjs && npm publish;"
   },
   "dependencies": {

@@ -5,6 +5,7 @@ import HStack from "./HStack";
 import Spacer from "./Spacer";
 import { ViewProps } from "./ViewProps";
 import VStack from "./VStack";
+import Text from "./Text";
 
 export const NavigationContext = React.createContext<{
 	push?: (content: React.ReactElement) => void;
@@ -84,6 +85,7 @@ export class NavigationView extends React.Component<ViewProps & {
 					height: "100%",
 				}}>
 					<NavigationBar
+						title={this.props.title}
 						rightItem={this.topView.props.rightBarButtonItem}
 						leftItem={this.leftBarButtonItem}
 					/>
@@ -134,19 +136,32 @@ class View extends React.Component<{
 class NavigationBar extends React.Component<{
 	leftItem?: ReactNode;
 	rightItem?: ReactNode;
+	title: string;
 }>{
 	render(): React.ReactNode {
 		const p = this.props;
 		return <HStack style={{
+			position: "relative",
 			height: 44,
+			padding: "0 16px",
 			flexShrink: 0,
 			backgroundColor: "var(--bg-color)",
-			// borderTop: "solid 0.5px var(--separator)",
 			borderBottom: "solid 0.5px var(--separator)"
 		}}>
+
+			<VStack alignment={"center"} justifyContent={"center"} style={{
+				position: "absolute",
+				width: "100%",
+				height: "100%",
+				pointerEvents:"none",
+			}}>
+				<Text size={16} bold >{p.title}</Text>
+			</VStack>
+
 			{p.leftItem}
 			<Spacer />
 			{p.rightItem}
+
 		</HStack>
 	}
 }
