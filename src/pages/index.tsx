@@ -1,6 +1,7 @@
 import { NavigationContext } from "@/components/NavigationView";
 import { Scene, SceneContext } from "@/components/Scene";
 import { Detent, ViewProps } from "@/components/ViewProps";
+import PageViewDemo from "@/demo/PageViewDemo";
 import React from "react";
 import { Button, HStack, NavigationView, TabItem, TabView, VStack } from "..";
 
@@ -10,7 +11,7 @@ export default class IndexPage extends React.PureComponent {
 	render() {
 		return <Scene>
 			<TabView items={[
-				new TabItem("Home", "/images/home.svg", <HomeView />),
+				new TabItem("Home", "/images/home.svg", <PageViewDemo />),
 				new TabItem("Weather", "/images/weather.svg", <HomeView />),
 				new TabItem("Search", "/images/search.svg", <HomeView />),
 				new TabItem("Account", "/images/profile.svg", <HomeView />),
