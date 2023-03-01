@@ -25,12 +25,22 @@ export class Scene extends React.Component<{
 			detent: Detent.large,
 			windowHeight: 0,
 		}
+		this.onWindowResized = this.onWindowResized.bind(this);
 		this.present = this.present.bind(this);
 		this.dismiss = this.dismiss.bind(this);
 		this.changeDetent = this.changeDetent.bind(this);
 	}
 
-	componentDidMount(): void {
+	componentDidMount() {
+		window.addEventListener('resize', this.onWindowResized);
+		this.onWindowResized();
+	}
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.onWindowResized);
+	}
+
+	onWindowResized() {
 		this.setState({ windowHeight: window.innerHeight });
 	}
 
