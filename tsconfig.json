@@ -30,6 +30,7 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
+    "**/*.css",
     "**/*.tsx"
   ],
   "exclude": [
