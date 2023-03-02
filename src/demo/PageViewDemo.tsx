@@ -13,11 +13,11 @@ export default class PageViewDemo extends React.Component<{}, {
 	}
 
 	render(): React.ReactNode {
-		return <VStack spacing={16} style={{ backgroundColor: "gray", height: "100%" }}>
+		return <VStack spacing={16} alignment="center" style={{ backgroundColor: "gray", height: "100%" }}>
 			<PageView style={{
 				height: 300,
 				width: 300,
-				backgroundColor: "white"
+				backgroundColor: "blue"
 			}}
 				onPageChanged={page => {
 					console.log(page)
@@ -28,7 +28,7 @@ export default class PageViewDemo extends React.Component<{}, {
 				<View3 />
 			</PageView>
 
-			<UIPageControl numberOfPages={8} currentPage={0} pageIndicatorTintColor="blue" />
+			<UIPageControl numberOfPages={3} currentPage={this.state.currentPage} pageIndicatorTintColor="blue" />
 		</VStack>
 	}
 }
