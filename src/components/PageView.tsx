@@ -14,6 +14,7 @@ export default class PageView extends React.Component<{
 	page?: number;
 	style?: CSSProperties;
 	children;
+	onPageChanged?: (page: number) => void;
 }, {
 	currentPageId: number;
 }>{
@@ -81,6 +82,9 @@ export default class PageView extends React.Component<{
 					return <Page page={index} key={index} snapEnabled={true} onVisible={e => {
 						if (this.scrolling == false) {
 							this.setState({ currentPageId: index });
+						}
+						if (p.onPageChanged) {
+							p.onPageChanged(index);
 						}
 					}}>{x}</Page>
 				})}
