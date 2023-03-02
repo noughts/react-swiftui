@@ -11,7 +11,6 @@ export default class UIPageControl extends React.Component<{
 
 	render(): React.ReactNode {
 		const p = this.props;
-		console.log(p.pageIndicatorTintColor)
 		const ary = Array.from(Array(p.numberOfPages), (v, k) => k)
 		return <HStack spacing={8}>
 			{ary.map((x,i) => {
