@@ -8,7 +8,6 @@
 */
 
 import React, { CSSProperties } from "react";
-import styles from "./PageView.module.css"
 
 
 export default class PageView extends React.Component<{
@@ -69,7 +68,7 @@ export default class PageView extends React.Component<{
 			flexDirection: "column",
 			...p.style
 		}}>
-			<div className={styles.scrollView} style={{
+			<div className="scrollView" style={{
 				flexGrow: 2,
 				display: "flex",
 				width: "100%",
@@ -90,6 +89,12 @@ export default class PageView extends React.Component<{
 					}}>{x}</Page>
 				})}
 			</div>
+
+			<style jsx>{`
+				.scrollView::-webkit-scrollbar {
+					display: none;
+				}
+			`}</style>
 		</div>
 	}
 }
