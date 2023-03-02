@@ -90,7 +90,7 @@ export default class PageView extends React.Component<{
 				})}
 			</div>
 
-			<style jsx>{`
+			<style>{`
 				.scrollView::-webkit-scrollbar {
 					display: none;
 				}
