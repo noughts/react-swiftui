@@ -68,7 +68,7 @@ export default class PageView extends React.Component<{
 			flexDirection: "column",
 			...p.style
 		}}>
-			<div className="__react_swiftui_scrollView" style={{
+			<div className="__react_swiftui_pageView_container" style={{
 				flexGrow: 2,
 				display: "flex",
 				width: "100%",
@@ -91,7 +91,7 @@ export default class PageView extends React.Component<{
 			</div>
 
 			<style>{`
-				.__react_swiftui_scrollView::-webkit-scrollbar {
+				.__react_swiftui_pageView_container::-webkit-scrollbar {
 					display: none;
 				}
 			`}</style>
