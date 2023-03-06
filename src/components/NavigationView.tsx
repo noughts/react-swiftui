@@ -60,6 +60,7 @@ export class NavigationView extends React.Component<ViewProps & {
 		return this.state.stack[this.state.stack.length - 1];
 	}
 
+
 	// 特に指定されていなければ Back ボタンを表示
 	get leftBarButtonItem() {
 		if (this.topView.props.leftBarButtonItem) {
@@ -102,7 +103,7 @@ export class NavigationView extends React.Component<ViewProps & {
 					height: "100%",
 				}}>
 					<NavigationBar
-						title={this.props.title}
+						title={this.topView.props.title}
 						rightItem={this.topView.props.rightBarButtonItem}
 						leftItem={this.leftBarButtonItem}
 					/>
