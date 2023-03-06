@@ -6,6 +6,7 @@ import Spacer from "./Spacer";
 import { ViewProps } from "./ViewProps";
 import VStack from "./VStack";
 import Text from "./Text";
+import "material-symbols"
 
 export const NavigationContext = React.createContext<{
 	push?: (content: React.ReactElement) => void;
@@ -69,9 +70,15 @@ export class NavigationView extends React.Component<ViewProps & {
 			return null;
 		}
 		return <NavigationContext.Consumer>{context =>
-			<Button label="< Back" action={e => {
+			<HStack style={{
+				color:"var(--key-color)"
+			}} onClick={e=>{
 				context.pop();
-			}} />
+			}}>
+				<div className="material-symbols-rounded" style={{ fontSize: 16, fontWeight: 600 }}>arrow_back_ios_new</div>
+				<Text bold size={16}>Back</Text>
+			</HStack>
+
 		}</NavigationContext.Consumer>
 
 	}
@@ -164,7 +171,7 @@ class NavigationBar extends React.Component<{
 				position: "absolute",
 				width: "100%",
 				height: "100%",
-				pointerEvents:"none",
+				pointerEvents: "none",
 			}}>
 				<Text size={16} bold >{p.title}</Text>
 			</VStack>
