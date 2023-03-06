@@ -6,7 +6,6 @@ import Spacer from "./Spacer";
 import { ViewProps } from "./ViewProps";
 import VStack from "./VStack";
 import Text from "./Text";
-import "material-symbols"
 
 export const NavigationContext = React.createContext<{
 	push?: (content: React.ReactElement) => void;
