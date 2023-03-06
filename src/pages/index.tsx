@@ -11,8 +11,8 @@ export default class IndexPage extends React.PureComponent {
 	render() {
 		return <Scene>
 			<TabView items={[
-				new TabItem("Home", "/images/home.svg", <PageViewDemo />),
-				new TabItem("Weather", "/images/weather.svg", <HomeView />),
+				new TabItem("Home", "/images/home.svg", <HomeView />),
+				new TabItem("Weather", "/images/weather.svg", <PageViewDemo />),
 				new TabItem("Search", "/images/search.svg", <HomeView />),
 				new TabItem("Account", "/images/profile.svg", <HomeView />),
 			]} />

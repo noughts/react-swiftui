@@ -28,9 +28,20 @@ export class NavigationView extends React.Component<ViewProps & {
 		}
 		this.push = this.push.bind(this);
 		this.pop = this.pop.bind(this);
+		this.onWindowResized = this.onWindowResized.bind(this);
 	}
 
 	componentDidMount(): void {
+		window.addEventListener('resize', this.onWindowResized);
+		this.onWindowResized();
+	}
+
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.onWindowResized);
+	}
+
+	onWindowResized() {
 		this.setState({ windowWidth: window.innerWidth });
 	}
 
