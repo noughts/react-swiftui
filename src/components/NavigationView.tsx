@@ -28,9 +28,20 @@ export class NavigationView extends React.Component<ViewProps & {
 		}
 		this.push = this.push.bind(this);
 		this.pop = this.pop.bind(this);
+		this.onWindowResized = this.onWindowResized.bind(this);
 	}
 
 	componentDidMount(): void {
+		window.addEventListener('resize', this.onWindowResized);
+		this.onWindowResized();
+	}
+
+
+	componentWillUnmount() {
+		window.removeEventListener('resize', this.onWindowResized);
+	}
+
+	onWindowResized() {
 		this.setState({ windowWidth: window.innerWidth });
 	}
 
@@ -49,6 +60,7 @@ export class NavigationView extends React.Component<ViewProps & {
 		return this.state.stack[this.state.stack.length - 1];
 	}
 
+
 	// 特に指定されていなければ Back ボタンを表示
 	get leftBarButtonItem() {
 		if (this.topView.props.leftBarButtonItem) {
@@ -58,9 +70,15 @@ export class NavigationView extends React.Component<ViewProps & {
 			return null;
 		}
 		return <NavigationContext.Consumer>{context =>
-			<Button label="< Back" action={e => {
+			<HStack style={{
+				color:"var(--key-color)"
+			}} onClick={e=>{
 				context.pop();
-			}} />
+			}}>
+				<div className="material-symbols-rounded" style={{ fontSize: 16, fontWeight: 600 }}>arrow_back_ios_new</div>
+				<Text bold size={16}>Back</Text>
+			</HStack>
+
 		}</NavigationContext.Consumer>
 
 	}
@@ -85,7 +103,7 @@ export class NavigationView extends React.Component<ViewProps & {
 					height: "100%",
 				}}>
 					<NavigationBar
-						title={this.props.title}
+						title={this.topView.props.title}
 						rightItem={this.topView.props.rightBarButtonItem}
 						leftItem={this.leftBarButtonItem}
 					/>
@@ -153,7 +171,7 @@ class NavigationBar extends React.Component<{
 				position: "absolute",
 				width: "100%",
 				height: "100%",
-				pointerEvents:"none",
+				pointerEvents: "none",
 			}}>
 				<Text size={16} bold >{p.title}</Text>
 			</VStack>

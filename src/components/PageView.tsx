@@ -14,6 +14,7 @@ export default class PageView extends React.Component<{
 	page?: number;
 	style?: CSSProperties;
 	children;
+	onPageChanged?: (page: number) => void;
 }, {
 	currentPageId: number;
 }>{
@@ -67,14 +68,14 @@ export default class PageView extends React.Component<{
 			flexDirection: "column",
 			...p.style
 		}}>
-			<div style={{
+			<div className="__react_swiftui_pageView_container" style={{
 				flexGrow: 2,
 				display: "flex",
 				width: "100%",
 				overflowX: "scroll",
 				overflowY: "hidden",
 				scrollSnapType: "x mandatory",
-				gap: 1,
+				gap: 0,
 				scrollBehavior: "auto",
 			}} ref={this.pages_ref}>
 				{contents.map((x, index) => {
@@ -82,9 +83,18 @@ export default class PageView extends React.Component<{
 						if (this.scrolling == false) {
 							this.setState({ currentPageId: index });
 						}
+						if (p.onPageChanged) {
+							p.onPageChanged(index);
+						}
 					}}>{x}</Page>
 				})}
 			</div>
+
+			<style>{`
+				.__react_swiftui_pageView_container::-webkit-scrollbar {
+					display: none;
+				}
+			`}</style>
 		</div>
 	}
 }

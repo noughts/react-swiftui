@@ -15,4 +15,4 @@ export { AnyTransition, Detent } from "./components/ViewProps"
 export type { ViewProps } from "./components/ViewProps"
 export { default as VStack } from "./components/VStack"
 export { default as ZStack } from "./components/ZStack"
-
+export {UIPageControl } from "./components/UIPageControl"

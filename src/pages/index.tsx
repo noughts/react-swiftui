@@ -1,6 +1,7 @@
 import { NavigationContext } from "@/components/NavigationView";
 import { Scene, SceneContext } from "@/components/Scene";
 import { Detent, ViewProps } from "@/components/ViewProps";
+import PageViewDemo from "@/demo/PageViewDemo";
 import React from "react";
 import { Button, HStack, NavigationView, TabItem, TabView, VStack } from "..";
 
@@ -11,7 +12,7 @@ export default class IndexPage extends React.PureComponent {
 		return <Scene>
 			<TabView items={[
 				new TabItem("Home", "/images/home.svg", <HomeView />),
-				new TabItem("Weather", "/images/weather.svg", <HomeView />),
+				new TabItem("Weather", "/images/weather.svg", <PageViewDemo />),
 				new TabItem("Search", "/images/search.svg", <HomeView />),
 				new TabItem("Account", "/images/profile.svg", <HomeView />),
 			]} />
@@ -30,7 +31,7 @@ class HomeView extends React.Component<{
 				<div>{this.props.text}</div>
 				<button onClick={e => {
 					sceneContext.present(
-						<NavigationView title="Sources" detent={Detent.medium}>
+						<NavigationView detent={Detent.medium}>
 							<ArticleList />
 						</NavigationView>)
 				}}>Present</button>
@@ -48,6 +49,7 @@ class ArticleList extends React.Component<ViewProps & {
 	declare context: React.ContextType<typeof NavigationContext>;
 
 	static defaultProps = {
+		title: "Article List",
 		rightBarButtonItem: <SceneContext.Consumer>{context =>
 			<Button label="Close" action={e => {
 				context.dismiss();
@@ -105,6 +107,7 @@ class ArticleView extends React.Component<ViewProps & {
 }>{
 
 	static defaultProps = {
+		title: "Article View",
 		rightBarButtonItem: <SceneContext.Consumer>{context =>
 			<Button label="Close" action={e => {
 				context.dismiss();
