@@ -153,7 +153,7 @@ class View extends React.Component<{
 			exit="exit"
 			transition={{
 				ease: "easeOut",
-				duration: 1,
+				// duration: 1,
 			}}
 			style={{
 				position: "absolute",
