@@ -18,6 +18,7 @@ export class NavigationView extends React.Component<ViewProps & {
 }, {
 	stack: any[];
 	windowWidth: number;
+	mode: "push" | "pop";
 }>{
 
 	constructor(p) {
@@ -25,6 +26,7 @@ export class NavigationView extends React.Component<ViewProps & {
 		this.state = {
 			stack: [p.children],
 			windowWidth: 0,
+			mode: "push",
 		}
 		this.push = this.push.bind(this);
 		this.pop = this.pop.bind(this);
@@ -48,12 +50,12 @@ export class NavigationView extends React.Component<ViewProps & {
 	push(view: React.ReactElement) {
 		const newAry = this.state.stack;
 		newAry.push(view);
-		this.setState({ stack: newAry })
+		this.setState({ stack: newAry, mode: "push" })
 	}
 	pop() {
 		const newAry = this.state.stack;
 		newAry.pop();
-		this.setState({ stack: newAry })
+		this.setState({ stack: newAry, mode: "pop" })
 	}
 
 	get topView(): React.ReactElement<ViewProps> {
@@ -71,12 +73,12 @@ export class NavigationView extends React.Component<ViewProps & {
 		}
 		return <NavigationContext.Consumer>{context =>
 			<HStack style={{
-				color:"var(--key-color)"
-			}} onClick={e=>{
+				color: "var(--key-color)"
+			}} onClick={e => {
 				context.pop();
 			}}>
-				<div className="material-symbols-rounded" style={{ fontSize: 16, fontWeight: 600 }}>arrow_back_ios_new</div>
-				<Text bold size={16}>Back</Text>
+				<div className="material-symbols-rounded" style={{ fontSize: 26, fontWeight: 400, marginLeft: -14 }}>arrow_back_ios_new</div>
+				<Text size={16}>Back</Text>
 			</HStack>
 
 		}</NavigationContext.Consumer>
@@ -84,6 +86,7 @@ export class NavigationView extends React.Component<ViewProps & {
 	}
 
 	render() {
+		const s = this.state;
 		const p = this.props;
 		let style: CSSProperties = {
 			position: "relative",
@@ -99,23 +102,16 @@ export class NavigationView extends React.Component<ViewProps & {
 				push: this.push,
 				pop: this.pop,
 			}}>
-				<VStack style={{
-					height: "100%",
-				}}>
+				<VStack style={{ height: "100%" }}>
 					<NavigationBar
 						title={this.topView.props.title}
 						rightItem={this.topView.props.rightBarButtonItem}
 						leftItem={this.leftBarButtonItem}
 					/>
-					<div style={{
-						position: "relative",
-						flexGrow: 2,
-					}}>
+					<div style={{ position: "relative", flexGrow: 2 }}>
 						{/* AnimatePresenceによって、exit アニメーションを有効に出来ます */}
-						<AnimatePresence>
-							{this.state.stack.map((x, i) => {
-								return <View key={i} windowWidth={this.state.windowWidth}>{x}</View>;
-							})}
+						<AnimatePresence initial={false} custom={{ "mode": s.mode }}>
+							<View key={s.stack.length} zIndex={s.stack.length} mode={s.mode} windowWidth={this.state.windowWidth}>{this.topView}</View>
 						</AnimatePresence>
 					</div>
 				</VStack>
@@ -128,21 +124,46 @@ export class NavigationView extends React.Component<ViewProps & {
 class View extends React.Component<{
 	children;
 	windowWidth: number;
+	mode: string;
+	zIndex: number;
 }>{
-	render(): React.ReactNode {
+
+	render() {
+		const p = this.props;
 		const initX = this.props.windowWidth;
 		return <motion.div
-			animate={{ x: 0 }}
-			initial={{ x: initX }}
-			exit={{ x: initX }}
+			initial="initial"
+			animate="animate"
+			variants={{
+				"initial": (custom) => {
+					if (this.props.mode == "pop") {
+						return { x: -100, filter: "brightness(0.8)" }
+					} else {
+						return { x: initX }
+					}
+				},
+				"animate": (custom) => {
+					return { x: 0, filter: "brightness(1)" }
+				},
+				"exit": (custom) => {
+					if (custom && custom.mode == "push") {
+						return { x: -100, filter: "brightness(0.8)" }
+					} else {
+						return { x: initX }
+					}
+				},
+			}}
+			exit="exit"
 			transition={{
-				ease: "easeOut"
+				ease: "easeOut",
+				// duration: 1,
 			}}
 			style={{
 				position: "absolute",
 				width: "100%",
 				height: "100%",
 				backgroundColor: "white",
+				zIndex: p.zIndex,
 			}}>
 			{this.props.children}
 		</motion.div>
@@ -173,7 +194,7 @@ class NavigationBar extends React.Component<{
 				height: "100%",
 				pointerEvents: "none",
 			}}>
-				<Text size={16} bold >{p.title}</Text>
+				<Text size={16} bold>{p.title}</Text>
 			</VStack>
 
 			{p.leftItem}

@@ -4,6 +4,7 @@ import { Detent, ViewProps } from "@/components/ViewProps";
 import PageViewDemo from "@/demo/PageViewDemo";
 import React from "react";
 import { Button, HStack, NavigationView, TabItem, TabView, VStack } from "..";
+import NavigationDemo from "@/demo/NavigationViewDemo";
 
 
 export default class IndexPage extends React.PureComponent {
@@ -11,16 +12,16 @@ export default class IndexPage extends React.PureComponent {
 	render() {
 		return <Scene>
 			<TabView items={[
-				new TabItem("Home", "/images/home.svg", <HomeView />),
+				new TabItem("Home", "/images/home.svg", <NavigationDemo />),
 				new TabItem("Weather", "/images/weather.svg", <PageViewDemo />),
-				new TabItem("Search", "/images/search.svg", <HomeView />),
-				new TabItem("Account", "/images/profile.svg", <HomeView />),
+				new TabItem("Search", "/images/search.svg", <PresentDemo />),
+				new TabItem("Account", "/images/profile.svg", <PresentDemo />),
 			]} />
 		</Scene>
 	}
 }
 
-class HomeView extends React.Component<{
+class PresentDemo extends React.Component<{
 	text?: string;
 }>{
 
@@ -77,9 +78,7 @@ class ArticleList extends React.Component<ViewProps & {
 				{ary.map(x => {
 					return <ArticleCell id={x} key={x} onClick={e => {
 						sceneContext.changeDetent(Detent.large)
-						this.context.push(<ArticleView
-							text={x.toString()}
-						/>)
+						this.context.push(<ArticleView text={x.toString()} />)
 					}} />
 				})}
 			</div>

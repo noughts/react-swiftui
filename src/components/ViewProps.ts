@@ -16,4 +16,5 @@ export interface ViewProps {
 	title?:string;
 	rightBarButtonItem?:ReactNode;
 	leftBarButtonItem?:ReactNode;
+	navigationBarHidden?:boolean;
 }
