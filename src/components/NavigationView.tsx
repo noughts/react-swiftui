@@ -62,29 +62,6 @@ export class NavigationView extends React.Component<ViewProps & {
 		return this.state.stack[this.state.stack.length - 1];
 	}
 
-
-	// 特に指定されていなければ Back ボタンを表示
-	get leftBarButtonItem() {
-		if (this.topView.props.leftBarButtonItem) {
-			return this.topView.props.leftBarButtonItem;
-		}
-		if (this.state.stack.length <= 1) {
-			return null;
-		}
-		return <NavigationContext.Consumer>{context =>
-			<HStack style={{
-				color: "var(--key-color)"
-			}} onClick={e => {
-				context.pop();
-			}}>
-				<div className="material-symbols-rounded" style={{ fontSize: 26, fontWeight: 400, marginLeft: -14 }}>arrow_back_ios_new</div>
-				<Text size={16}>Back</Text>
-			</HStack>
-
-		}</NavigationContext.Consumer>
-
-	}
-
 	render() {
 		const s = this.state;
 		const p = this.props;
@@ -102,19 +79,16 @@ export class NavigationView extends React.Component<ViewProps & {
 				push: this.push,
 				pop: this.pop,
 			}}>
-				<VStack style={{ height: "100%" }}>
-					<NavigationBar
-						title={this.topView.props.title}
-						rightItem={this.topView.props.rightBarButtonItem}
-						leftItem={this.leftBarButtonItem}
+				{/* AnimatePresenceによって、exit アニメーションを有効に出来ます */}
+				<AnimatePresence initial={false} custom={{ "mode": s.mode }}>
+					<View
+						key={s.stack.length}
+						zIndex={s.stack.length}
+						mode={s.mode}
+						view={this.topView}
+						windowWidth={this.state.windowWidth}
 					/>
-					<div style={{ position: "relative", flexGrow: 2 }}>
-						{/* AnimatePresenceによって、exit アニメーションを有効に出来ます */}
-						<AnimatePresence initial={false} custom={{ "mode": s.mode }}>
-							<View key={s.stack.length} zIndex={s.stack.length} mode={s.mode} windowWidth={this.state.windowWidth}>{this.topView}</View>
-						</AnimatePresence>
-					</div>
-				</VStack>
+				</AnimatePresence>
 			</NavigationContext.Provider>
 		</div>
 	}
@@ -122,11 +96,34 @@ export class NavigationView extends React.Component<ViewProps & {
 
 
 class View extends React.Component<{
-	children;
+	view: React.ReactElement<ViewProps>;
 	windowWidth: number;
 	mode: string;
 	zIndex: number;
 }>{
+
+
+	// 特に指定されていなければ Back ボタンを表示
+	get leftBarButtonItem(): ReactNode {
+		const view = this.props.view;
+		if (view.props.leftBarButtonItem) {
+			return view.props.leftBarButtonItem;
+		}
+		if (this.props.zIndex <= 1) {
+			return null;
+		}
+		return <NavigationContext.Consumer>{context =>
+			<HStack style={{
+				color: "var(--key-color)"
+			}} onClick={e => {
+				context.pop();
+			}}>
+				<div className="material-symbols-rounded" style={{ fontSize: 26, fontWeight: 400, marginLeft: -14 }}>arrow_back_ios_new</div>
+				<Text size={16}>Back</Text>
+			</HStack>
+
+		}</NavigationContext.Consumer>
+	}
 
 	render() {
 		const p = this.props;
@@ -156,7 +153,7 @@ class View extends React.Component<{
 			exit="exit"
 			transition={{
 				ease: "easeOut",
-				// duration: 1,
+				duration: 1,
 			}}
 			style={{
 				position: "absolute",
@@ -165,7 +162,17 @@ class View extends React.Component<{
 				backgroundColor: "white",
 				zIndex: p.zIndex,
 			}}>
-			{this.props.children}
+			<VStack style={{ height: "100%" }}>
+				{!p.view.props.navigationBarHidden &&
+					<NavigationBar
+						key="navigationBar"
+						title={p.view.props.title}
+						rightItem={p.view.props.rightBarButtonItem}
+						leftItem={this.leftBarButtonItem}
+					/>
+				}
+				{p.view}
+			</VStack>
 		</motion.div>
 	}
 }
