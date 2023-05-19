@@ -18,7 +18,6 @@ export class NavigationView extends React.Component<ViewProps & {
 }, {
 	stack: any[];
 	windowWidth: number;
-	mode: "push" | "pop";
 }>{
 
 	constructor(p) {
@@ -26,7 +25,6 @@ export class NavigationView extends React.Component<ViewProps & {
 		this.state = {
 			stack: [p.children],
 			windowWidth: 0,
-			mode: "push",
 		}
 		this.push = this.push.bind(this);
 		this.pop = this.pop.bind(this);
@@ -50,39 +48,16 @@ export class NavigationView extends React.Component<ViewProps & {
 	push(view: React.ReactElement) {
 		const newAry = this.state.stack;
 		newAry.push(view);
-		this.setState({ stack: newAry, mode: "push" })
+		this.setState({ stack: newAry })
 	}
 	pop() {
 		const newAry = this.state.stack;
 		newAry.pop();
-		this.setState({ stack: newAry, mode: "pop" })
+		this.setState({ stack: newAry })
 	}
 
 	get topView(): React.ReactElement<ViewProps> {
 		return this.state.stack[this.state.stack.length - 1];
-	}
-
-
-	// 特に指定されていなければ Back ボタンを表示
-	get leftBarButtonItem() {
-		if (this.topView.props.leftBarButtonItem) {
-			return this.topView.props.leftBarButtonItem;
-		}
-		if (this.state.stack.length <= 1) {
-			return null;
-		}
-		return <NavigationContext.Consumer>{context =>
-			<HStack style={{
-				color: "var(--key-color)"
-			}} onClick={e => {
-				context.pop();
-			}}>
-				<div className="material-symbols-rounded" style={{ fontSize: 26, fontWeight: 400, marginLeft: -14 }}>arrow_back_ios_new</div>
-				<Text size={16}>Back</Text>
-			</HStack>
-
-		}</NavigationContext.Consumer>
-
 	}
 
 	render() {
@@ -102,19 +77,20 @@ export class NavigationView extends React.Component<ViewProps & {
 				push: this.push,
 				pop: this.pop,
 			}}>
-				<VStack style={{ height: "100%" }}>
-					<NavigationBar
-						title={this.topView.props.title}
-						rightItem={this.topView.props.rightBarButtonItem}
-						leftItem={this.leftBarButtonItem}
-					/>
-					<div style={{ position: "relative", flexGrow: 2 }}>
-						{/* AnimatePresenceによって、exit アニメーションを有効に出来ます */}
-						<AnimatePresence initial={false} custom={{ "mode": s.mode }}>
-							<View key={s.stack.length} zIndex={s.stack.length} mode={s.mode} windowWidth={this.state.windowWidth}>{this.topView}</View>
-						</AnimatePresence>
-					</div>
-				</VStack>
+				{/* AnimatePresenceによって、exit アニメーションを有効に出来ます */}
+				<AnimatePresence initial={false}>
+					{s.stack.map((x, i) => {
+						const variantName = i == (s.stack.length - 1) ? "focus" : "unfocus";
+						return <View
+							key={i}
+							zIndex={i}
+							variantName={variantName}
+							view={x}
+							windowWidth={s.windowWidth}
+						/>
+					})}
+
+				</AnimatePresence>
 			</NavigationContext.Provider>
 		</div>
 	}
@@ -122,38 +98,46 @@ export class NavigationView extends React.Component<ViewProps & {
 
 
 class View extends React.Component<{
-	children;
+	view: React.ReactElement<ViewProps>;
 	windowWidth: number;
-	mode: string;
+	variantName: string;
 	zIndex: number;
 }>{
+
+
+	// 特に指定されていなければ Back ボタンを表示
+	get leftBarButtonItem(): ReactNode {
+		const view = this.props.view;
+		if (view.props.leftBarButtonItem) {
+			return view.props.leftBarButtonItem;
+		}
+		if (this.props.zIndex == 0) {
+			return null;
+		}
+		return <NavigationContext.Consumer>{context =>
+			<HStack style={{
+				color: "var(--key-color)"
+			}} onClick={e => {
+				context.pop();
+			}}>
+				<div className="material-symbols-rounded" style={{ fontSize: 26, fontWeight: 400, marginLeft: -14 }}>arrow_back_ios_new</div>
+				<Text size={16}>Back</Text>
+			</HStack>
+
+		}</NavigationContext.Consumer>
+	}
 
 	render() {
 		const p = this.props;
 		const initX = this.props.windowWidth;
 		return <motion.div
-			initial="initial"
-			animate="animate"
 			variants={{
-				"initial": (custom) => {
-					if (this.props.mode == "pop") {
-						return { x: -100, filter: "brightness(0.8)" }
-					} else {
-						return { x: initX }
-					}
-				},
-				"animate": (custom) => {
-					return { x: 0, filter: "brightness(1)" }
-				},
-				"exit": (custom) => {
-					if (custom && custom.mode == "push") {
-						return { x: -100, filter: "brightness(0.8)" }
-					} else {
-						return { x: initX }
-					}
-				},
+				"focus": { x: 0, filter: "brightness(1)" },
+				"unfocus": { x: -100, filter: "brightness(0.8)" }
 			}}
-			exit="exit"
+			initial={{ x: initX }}
+			animate={p.variantName}
+			exit={{ x: initX }}
 			transition={{
 				ease: "easeOut",
 				// duration: 1,
@@ -165,7 +149,17 @@ class View extends React.Component<{
 				backgroundColor: "white",
 				zIndex: p.zIndex,
 			}}>
-			{this.props.children}
+			<VStack style={{ height: "100%" }}>
+				{!p.view.props.navigationBarHidden &&
+					<NavigationBar
+						key="navigationBar"
+						title={p.view.props.title}
+						rightItem={p.view.props.rightBarButtonItem}
+						leftItem={this.leftBarButtonItem}
+					/>
+				}
+				{p.view}
+			</VStack>
 		</motion.div>
 	}
 }
