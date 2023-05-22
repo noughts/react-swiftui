@@ -150,7 +150,7 @@ class View extends React.Component<{
 	render(): React.ReactNode {
 		const initial = this._initial;
 		const animate = this._animate;
-		const radius = this.props.detent == Detent.large ? 0 : 8;
+		const radius = this.props.detent == Detent.medium ? 8 : 0;
 		return <div className="Scene_View" style={{
 			position: "absolute",
 			top: 0,
