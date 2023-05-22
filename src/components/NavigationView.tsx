@@ -12,7 +12,7 @@ export const NavigationContext = React.createContext<{
 	pop?: Function;
 }>({});
 
-export class NavigationView extends React.Component<ViewProps & {
+export class NavigationView extends React.Component<{
 	style?: CSSProperties;
 	children?: React.ReactElement<ViewProps>;
 }, {
@@ -81,7 +81,7 @@ export class NavigationView extends React.Component<ViewProps & {
 				<AnimatePresence initial={false}>
 					{s.stack.map((x, i) => {
 						const variantName = i == (s.stack.length - 1) ? "focus" : "unfocus";
-						return <View
+						return <Container
 							key={i}
 							zIndex={i}
 							variantName={variantName}
@@ -97,8 +97,8 @@ export class NavigationView extends React.Component<ViewProps & {
 }
 
 
-class View extends React.Component<{
-	view: React.ReactElement<ViewProps>;
+class Container extends React.Component<{
+	view: IView & ViewProps;
 	windowWidth: number;
 	variantName: string;
 	zIndex: number;
@@ -107,9 +107,9 @@ class View extends React.Component<{
 
 	// 特に指定されていなければ Back ボタンを表示
 	get leftBarButtonItem(): ReactNode {
-		const view = this.props.view;
-		if (view.props.leftBarButtonItem) {
-			return view.props.leftBarButtonItem;
+		const navItem = this.props.view.navigationItem();
+		if (navItem.leftBarButtonItem) {
+			return navItem.leftBarButtonItem;
 		}
 		if (this.props.zIndex == 0) {
 			return null;
@@ -130,6 +130,7 @@ class View extends React.Component<{
 	render() {
 		const p = this.props;
 		const initX = this.props.windowWidth;
+		const navItem = this.props.view.navigationItem();
 		return <motion.div
 			variants={{
 				"focus": { x: 0, filter: "brightness(1)" },
@@ -150,11 +151,11 @@ class View extends React.Component<{
 				zIndex: p.zIndex,
 			}}>
 			<VStack style={{ height: "100%" }}>
-				{!p.view.props.navigationBarHidden &&
+				{!p.view.navigationBarHidden &&
 					<NavigationBar
 						key="navigationBar"
-						title={p.view.props.title}
-						rightItem={p.view.props.rightBarButtonItem}
+						title={navItem.title}
+						rightItem={navItem.rightBarButtonItem}
 						leftItem={this.leftBarButtonItem}
 					/>
 				}
@@ -197,4 +198,15 @@ class NavigationBar extends React.Component<{
 
 		</HStack>
 	}
+}
+
+
+export class NavigationItem{
+	title:string;
+	leftBarButtonItem:ReactNode;
+	rightBarButtonItem:ReactNode;
+}
+
+export interface IView{
+	navigationItem():NavigationItem;
 }

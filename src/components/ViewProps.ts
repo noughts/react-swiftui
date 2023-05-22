@@ -1,6 +1,7 @@
 import React, { ReactNode } from "react"
+import { NavigationItem } from "./NavigationView";
 
-export enum AnyTransition{
+export enum AnyTransition {
 	opacity,
 	slide,
 }
@@ -12,9 +13,6 @@ export enum Detent {
 
 export interface ViewProps {
 	// transition?:AnyTransition;
-	detent?:Detent;
-	title?:string;
-	rightBarButtonItem?:ReactNode;
-	leftBarButtonItem?:ReactNode;
-	navigationBarHidden?:boolean;
+	detent?: Detent;
+	navigationBarHidden?: boolean;
 }
