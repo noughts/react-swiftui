@@ -7,9 +7,11 @@ export default class ScrollView extends React.Component<{
 	padding?: number;
 	innerRef?;
 	style?: CSSProperties;
-	negativeMargin?:number;
-	children:ReactNode;
+	negativeMargin?: number;
+	children: ReactNode;
+	scrollBarHidden?:boolean;
 }>{
+	
 	static defaultProps = {
 		axis: "vertical",
 		padding: 0,
@@ -36,18 +38,27 @@ export default class ScrollView extends React.Component<{
 	}
 
 	render() {
-		const p =this.props;
+		const p = this.props;
 		let style = this.style;
 		if (p.style) {
 			style = Object.assign(style, p.style);
 		}
-		if( p.negativeMargin ){
-			style.marginLeft = -16;
-			style.marginRight = -16;
-			style.paddingLeft = 16;
-			style.paddingRight = 16;
+		if (p.negativeMargin > 0) {
+			style.marginLeft = -p.negativeMargin;
+			style.marginRight = -p.negativeMargin;
+			style.paddingLeft = p.negativeMargin;
+			style.paddingRight = p.negativeMargin;
 		}
-		return <div className="ScrollView" ref={p.innerRef} style={style}>{p.children}</div>
+		const optionClassName = p.scrollBarHidden ? "scrollBarHidden" : "";
+		return <>
+			<div className={`ScrollView ${optionClassName}`} ref={p.innerRef} style={style}>{p.children}</div>
+			<style>{`
+				.scrollBarHidden::-webkit-scrollbar {
+					display: none;
+				}
+			`}</style>
+		</>
+
 	}
 }
 

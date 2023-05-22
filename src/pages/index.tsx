@@ -5,6 +5,7 @@ import PageViewDemo from "@/demo/PageViewDemo";
 import React from "react";
 import { Button, HStack, NavigationView, TabItem, TabView, VStack } from "..";
 import NavigationDemo from "@/demo/NavigationViewDemo";
+import CarouselDemo from "@/demo/CarouselDemo";
 
 
 export default class IndexPage extends React.PureComponent {
@@ -12,9 +13,9 @@ export default class IndexPage extends React.PureComponent {
 	render() {
 		return <Scene>
 			<TabView items={[
-				new TabItem("Home", "/images/home.svg", <NavigationDemo />),
+				new TabItem("Home", "/images/home.svg", <CarouselDemo />),
 				new TabItem("Weather", "/images/weather.svg", <PageViewDemo />),
-				new TabItem("Search", "/images/search.svg", <PresentDemo />),
+				new TabItem("Search", "/images/search.svg", <NavigationDemo />),
 				new TabItem("Account", "/images/profile.svg", <PresentDemo />),
 			]} />
 		</Scene>
