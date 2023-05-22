@@ -1,7 +1,7 @@
 
 import { UIPageControl } from "@/components/UIPageControl";
 import React from "react"
-import { HStack, PageView, ScrollView, VStack } from ".."
+import { Button, HStack, PageView, ScrollView, VStack } from ".."
 
 export default class CarouselDemo extends React.Component{
 
@@ -16,7 +16,8 @@ export default class CarouselDemo extends React.Component{
 					})}
 				</HStack>
 			</ScrollView>
-
+			<Button label="Done" style={{fontWeight:"bold", fontSize:20}}/>
+			<Button label="Cancel" />
 		</VStack>
 	}
 }

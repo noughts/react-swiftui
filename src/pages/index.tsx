@@ -20,10 +20,10 @@ export default class IndexPage extends React.PureComponent {
 				new TabItem("Account", "/images/profile.svg", <PresentDemo />),
 			]}>
 				<img src="/images/promoteButton.svg" style={{
-					position:"absolute",
-					bottom:0,
-					left:"50%",
-					transform:"translateX(-50%)",
+					position: "absolute",
+					bottom: 0,
+					left: "50%",
+					transform: "translateX(-50%)",
 				}} />
 			</TabView>
 		</Scene>
@@ -38,19 +38,34 @@ class PresentDemo extends React.Component<{
 	text?: string;
 }>{
 
+	static contextType = SceneContext;
+	declare context: React.ContextType<typeof SceneContext>;
+
 	render(): React.ReactNode {
 		const s = this.state;
-		return <SceneContext.Consumer>{sceneContext =>
-			<VStack alignment={"center"}>
-				<div>{this.props.text}</div>
-				<button onClick={e => {
-					sceneContext.present(
-						<NavigationView detent={Detent.medium}>
-							<ArticleList />
-						</NavigationView>)
-				}}>Present</button>
-			</VStack>
-		}</SceneContext.Consumer>
+		return <VStack alignment={"center"}>
+			<div>{this.props.text}</div>
+			<button onClick={e => {
+				this.context.present(
+					<NavigationView detent={Detent.medium}>
+						<ArticleList />
+					</NavigationView>)
+			}}>Present (Medium)</button>
+
+			<button onClick={e => {
+				this.context.present(
+					<NavigationView detent={Detent.large}>
+						<ArticleList />
+					</NavigationView>)
+			}}>Present (Large)</button>
+
+			<button onClick={e => {
+				this.context.present(
+					<NavigationView>
+						<ArticleList />
+					</NavigationView>)
+			}}>Present (No)</button>
+		</VStack>
 	}
 }
 

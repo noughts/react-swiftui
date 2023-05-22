@@ -70,7 +70,7 @@ export class Scene extends React.Component<{
 			position: "relative",
 			width: "100%",
 			height: "100%",
-			zIndex:1,// スタッキングコンテキスト作成
+			zIndex: 1,// スタッキングコンテキスト作成
 		}}>
 			<SceneContext.Provider value={{
 				present: this.present,
@@ -150,13 +150,14 @@ class View extends React.Component<{
 	render(): React.ReactNode {
 		const initial = this._initial;
 		const animate = this._animate;
+		const radius = this.props.detent == Detent.medium ? 8 : 0;
 		return <div className="Scene_View" style={{
 			position: "absolute",
 			top: 0,
 			left: 0,
 			width: "100%",
 			height: "100%",
-			zIndex:1,// スタッキングコンテキスト作成
+			zIndex: 1,// スタッキングコンテキスト作成
 		}}>
 			<ShadeView />
 			<motion.div
@@ -170,8 +171,8 @@ class View extends React.Component<{
 					position: "absolute",
 					width: "100%",
 					height: "100%",
-					borderRadius:"8px 8px 0 0",
-					overflow:"hidden",
+					borderRadius: `${radius}px ${radius}px 0 0`,
+					overflow: "hidden",
 				}}>
 				{this.props.children}
 			</motion.div>
