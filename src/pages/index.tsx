@@ -15,12 +15,24 @@ export default class IndexPage extends React.PureComponent {
 			<TabView items={[
 				new TabItem("Home", "/images/home.svg", <CarouselDemo />),
 				new TabItem("Weather", "/images/weather.svg", <PageViewDemo />),
+				new TabItem("", null, <PageViewDemo />),
 				new TabItem("Search", "/images/search.svg", <NavigationDemo />),
 				new TabItem("Account", "/images/profile.svg", <PresentDemo />),
-			]} />
+			]}>
+				<img src="/images/promoteButton.svg" style={{
+					position:"absolute",
+					bottom:0,
+					left:"50%",
+					transform:"translateX(-50%)",
+				}} />
+			</TabView>
 		</Scene>
 	}
 }
+
+
+
+
 
 class PresentDemo extends React.Component<{
 	text?: string;

@@ -7,13 +7,14 @@
 
 */
 
-import React, { CSSProperties } from "react";
+import React, { CSSProperties, ReactNode } from "react";
 import HStack from "./HStack";
 import TabItem from "./TabItem";
 import VStack from "./VStack";
 
 export default class TabView extends React.Component<{
 	items: TabItem[],
+	children?:ReactNode;
 }, {
 	selectedIndex: number;
 }>{
@@ -28,7 +29,7 @@ export default class TabView extends React.Component<{
 
 	render() {
 		const selectedItem = this.props.items[this.state.selectedIndex];
-		return <div className="TabView" style={{zIndex:1,position:"relative"}}>
+		return <div className="TabView" style={{ zIndex: 1, position: "relative" }}>
 			<VStack alignment={"stretch"} style={{
 				height: "calc(var(--vh, 1vh) * 100)",
 			}}>
@@ -45,6 +46,7 @@ export default class TabView extends React.Component<{
 						this.setState({ selectedIndex: e });
 					}} />
 			</VStack>
+			{this.props.children}
 		</div>
 	}
 }
