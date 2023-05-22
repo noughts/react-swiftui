@@ -6,6 +6,7 @@ export default class Button extends React.Component<{
 	action?: Function;
 	label: string;
 	flexGrow?: number;
+	style?: CSSProperties;
 }>{
 
 	static defaultProps = {
@@ -17,14 +18,13 @@ export default class Button extends React.Component<{
 		const p = this.props;
 		const style: CSSProperties = {
 			border: "none",
-			backgroundColor:"transparent",
-			fontSize:15,
-			fontWeight: "bold",
+			backgroundColor: "transparent",
+			fontSize: 15,
 			color: "var(--key-color)",
 			lineHeight: 1,
-			padding:0,
+			padding: 0,
 			flexGrow: p.flexGrow,
-		}
+		};
 		switch (p.buttonStyle) {
 			case "bordered":
 				style.backgroundColor = "gray";
@@ -38,7 +38,7 @@ export default class Button extends React.Component<{
 				style.borderRadius = 4;
 				break;
 		}
-		return <button style={style} onClick={e => {
+		return <button style={{...style, ...this.props.style}} onClick={e => {
 			if (p.action) {
 				p.action();
 			}
