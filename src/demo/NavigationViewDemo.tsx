@@ -29,7 +29,10 @@ class Page1 extends React.Component<ViewProps, {
 	}
 
 	get postButton(){
-		return <Button label="Post" style={{fontWeight:"bold"}} />
+		return <Button label="Post" style={{fontWeight:"bold"}} action={e=>{
+			const newCount = this.state.counter + 1;
+			this.setState({ counter: newCount });
+		}} />
 	}
 
 	render(): React.ReactNode {
