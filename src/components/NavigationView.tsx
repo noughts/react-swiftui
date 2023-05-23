@@ -141,15 +141,7 @@ export class NavigationBar extends React.Component<{
 	title: string;
 }>{
 
-	// 特に指定されていなければ Back ボタンを表示
-	get leftBarButtonItem(): ReactNode {
-		if( this.props.leftItem ){
-			return this.props.leftItem;
-		}
-		return this.backButton
-	}
-
-	get backButton() {
+	static get backButton() {
 		return <NavigationContext.Consumer>{context =>
 			<HStack style={{
 				color: "var(--key-color)"
@@ -183,7 +175,7 @@ export class NavigationBar extends React.Component<{
 				<Text size={16} bold>{p.title}</Text>
 			</VStack>
 
-			{this.leftBarButtonItem}
+			{p.leftItem}
 			<Spacer />
 			{p.rightItem}
 

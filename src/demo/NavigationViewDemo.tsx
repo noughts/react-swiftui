@@ -28,8 +28,8 @@ class Page1 extends React.Component<ViewProps, {
 		}
 	}
 
-	get postButton(){
-		return <Button label="Post" style={{fontWeight:"bold"}} action={e=>{
+	get postButton() {
+		return <Button label="Post" style={{ fontWeight: "bold" }} action={e => {
 			const newCount = this.state.counter + 1;
 			this.setState({ counter: newCount });
 		}} />
@@ -76,6 +76,10 @@ class Page2 extends React.Component<ViewProps, {
 
 	render(): React.ReactNode {
 		return <VStack spacing={8}>
+			<NavigationBar
+				title="Page 2"
+				leftItem={NavigationBar.backButton}
+			/>
 			<div>Page2</div>
 			<div>{this.state.counter}</div>
 			<Button label="pop" action={e => {
