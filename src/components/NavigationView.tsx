@@ -12,7 +12,7 @@ export const NavigationContext = React.createContext<{
 	pop?: Function;
 }>({});
 
-export class NavigationView extends React.Component<ViewProps & {
+export class NavigationView extends React.Component<{
 	style?: CSSProperties;
 	children?: React.ReactElement<ViewProps>;
 }, {
@@ -81,7 +81,7 @@ export class NavigationView extends React.Component<ViewProps & {
 				<AnimatePresence initial={false}>
 					{s.stack.map((x, i) => {
 						const variantName = i == (s.stack.length - 1) ? "focus" : "unfocus";
-						return <View
+						return <Container
 							key={i}
 							zIndex={i}
 							variantName={variantName}
@@ -97,35 +97,12 @@ export class NavigationView extends React.Component<ViewProps & {
 }
 
 
-class View extends React.Component<{
-	view: React.ReactElement<ViewProps>;
+class Container extends React.Component<{
+	view: ViewProps;
 	windowWidth: number;
 	variantName: string;
 	zIndex: number;
 }>{
-
-
-	// 特に指定されていなければ Back ボタンを表示
-	get leftBarButtonItem(): ReactNode {
-		const view = this.props.view;
-		if (view.props.leftBarButtonItem) {
-			return view.props.leftBarButtonItem;
-		}
-		if (this.props.zIndex == 0) {
-			return null;
-		}
-		return <NavigationContext.Consumer>{context =>
-			<HStack style={{
-				color: "var(--key-color)"
-			}} onClick={e => {
-				context.pop();
-			}}>
-				<div className="material-symbols-rounded" style={{ fontSize: 26, fontWeight: 400, marginLeft: -14 }}>arrow_back_ios_new</div>
-				<Text size={16}>Back</Text>
-			</HStack>
-
-		}</NavigationContext.Consumer>
-	}
 
 	render() {
 		const p = this.props;
@@ -150,14 +127,6 @@ class View extends React.Component<{
 				zIndex: p.zIndex,
 			}}>
 			<VStack style={{ height: "100%" }}>
-				{!p.view.props.navigationBarHidden &&
-					<NavigationBar
-						key="navigationBar"
-						title={p.view.props.title}
-						rightItem={p.view.props.rightBarButtonItem}
-						leftItem={this.leftBarButtonItem}
-					/>
-				}
 				{p.view}
 			</VStack>
 		</motion.div>
@@ -166,11 +135,26 @@ class View extends React.Component<{
 
 
 
-class NavigationBar extends React.Component<{
+export class NavigationBar extends React.Component<{
 	leftItem?: ReactNode;
 	rightItem?: ReactNode;
 	title: string;
 }>{
+
+	static get backButton() {
+		return <NavigationContext.Consumer>{context =>
+			<HStack style={{
+				color: "var(--key-color)"
+			}} onClick={e => {
+				context.pop();
+			}}>
+				<div className="material-symbols-rounded" style={{ fontSize: 26, fontWeight: 400, marginLeft: -14 }}>arrow_back_ios_new</div>
+				<Text size={16}>Back</Text>
+			</HStack>
+
+		}</NavigationContext.Consumer>
+	}
+
 	render(): React.ReactNode {
 		const p = this.props;
 		return <HStack style={{
@@ -198,3 +182,4 @@ class NavigationBar extends React.Component<{
 		</HStack>
 	}
 }
+

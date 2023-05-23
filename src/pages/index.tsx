@@ -1,4 +1,4 @@
-import { NavigationContext } from "@/components/NavigationView";
+import { IView, NavigationContext, NavigationItem } from "@/components/NavigationView";
 import { Scene, SceneContext } from "@/components/Scene";
 import { Detent, ViewProps } from "@/components/ViewProps";
 import PageViewDemo from "@/demo/PageViewDemo";
@@ -13,7 +13,7 @@ export default class IndexPage extends React.PureComponent {
 	render() {
 		return <Scene>
 			<TabView items={[
-				new TabItem("Home", "/images/home.svg", <CarouselDemo />),
+				new TabItem("Home", "/images/home.svg", <NavigationDemo />),
 				new TabItem("Weather", "/images/weather.svg", <PageViewDemo />),
 				new TabItem("", null, <PageViewDemo />),
 				new TabItem("Search", "/images/search.svg", <NavigationDemo />),
@@ -47,15 +47,15 @@ class PresentDemo extends React.Component<{
 			<div>{this.props.text}</div>
 			<button onClick={e => {
 				this.context.present(
-					<NavigationView detent={Detent.medium}>
-						<ArticleList />
+					<NavigationView >
+						<ArticleList detent={Detent.medium} />
 					</NavigationView>)
 			}}>Present (Medium)</button>
 
 			<button onClick={e => {
 				this.context.present(
-					<NavigationView detent={Detent.large}>
-						<ArticleList />
+					<NavigationView >
+						<ArticleList detent={Detent.large} />
 					</NavigationView>)
 			}}>Present (Large)</button>
 
@@ -72,7 +72,11 @@ class PresentDemo extends React.Component<{
 
 
 class ArticleList extends React.Component<ViewProps & {
-}>{
+}> implements IView{
+
+	navigationItem(): NavigationItem {
+		return new NavigationItem();
+	}
 
 	static contextType = NavigationContext;
 	declare context: React.ContextType<typeof NavigationContext>;
