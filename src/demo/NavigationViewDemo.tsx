@@ -1,14 +1,17 @@
 import React from "react"
 import { Button, NavigationContext, NavigationView, VStack, ViewProps } from ".."
+import { NavigationBar } from "@/components/NavigationView";
 
 
 export default class NavigationDemo extends React.Component {
 	render(): React.ReactNode {
 		return <NavigationView>
-			<Page1 navigationBarHidden={true} />
+			<Page1 />
 		</NavigationView>
 	}
 }
+
+
 
 class Page1 extends React.Component<ViewProps, {
 	counter: number;
@@ -25,8 +28,16 @@ class Page1 extends React.Component<ViewProps, {
 		}
 	}
 
+	get postButton(){
+		return <Button label="Post" style={{fontWeight:"bold"}} />
+	}
+
 	render(): React.ReactNode {
 		return <VStack spacing={8}>
+			<NavigationBar
+				title="Page 1"
+				rightItem={this.postButton}
+			/>
 			<div>Page1</div>
 			<div>{this.state.counter}</div>
 			<Button label="push" action={e => {
