@@ -1,42 +1,38 @@
-import { NavigationContext } from "@/components/NavigationView";
-import { Scene, SceneContext } from "@/components/Scene";
-import { Detent, ViewProps } from "@/components/ViewProps";
-import PageViewDemo from "@/demo/PageViewDemo";
-import React from "react";
-import { Button, HStack, NavigationView, TabItem, TabView, VStack } from "..";
-import NavigationDemo from "@/demo/NavigationViewDemo";
-import CarouselDemo from "@/demo/CarouselDemo";
-import { HalfModalDemo } from "@/demo/HalfModalDemo";
+import React, { useContext } from "react"
+import { VStack, NavigationView, Detent, SceneContext, Button, HStack, NavigationContext, ViewProps } from ".."
 
+export const HalfModalDemo:React.FC<{text:string}> = (props) =>{
+	const sceneContext = useContext(SceneContext);
+	
+	return <VStack alignment={"center"}>
+			<div>{props.text}</div>
+			<button onClick={e => {
+				sceneContext.present(
+					<NavigationView >
+						<ArticleList detent={Detent.medium} />
+					</NavigationView>)
+			}}>Present (Medium)</button>
 
-export default class IndexPage extends React.PureComponent {
+			<button onClick={e => {
+				sceneContext.present(
+					<NavigationView >
+						<ArticleList detent={Detent.large} />
+					</NavigationView>)
+			}}>Present (Large)</button>
 
-	render() {
-		return <Scene>
-			<TabView items={[
-				new TabItem("Home", "/images/home.svg", <HalfModalDemo text="hoge" />),
-				new TabItem("Weather", "/images/weather.svg", <NavigationDemo />),
-				new TabItem("", null, <PageViewDemo />),
-				new TabItem("Search", "/images/search.svg", <PageViewDemo />),
-				new TabItem("Account", "/images/profile.svg", <PageViewDemo />),
-			]}>
-				<img src="/images/promoteButton.svg" style={{
-					position: "absolute",
-					bottom: 0,
-					left: "50%",
-					transform: "translateX(-50%)",
-				}} />
-			</TabView>
-		</Scene>
-	}
+			<button onClick={e => {
+				sceneContext.present(
+					<NavigationView>
+						<ArticleList />
+					</NavigationView>)
+			}}>Present (No)</button>
+		</VStack>
 }
 
 
 
 
-
-class ArticleList extends React.Component<ViewProps & {
-}>{
+class ArticleList extends React.Component<ViewProps & {}>{
 
 	static contextType = NavigationContext;
 	declare context: React.ContextType<typeof NavigationContext>;

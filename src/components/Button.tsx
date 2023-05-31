@@ -3,6 +3,8 @@ import React, { CSSProperties } from "react";
 
 export default class Button extends React.Component<{
 	buttonStyle?: "bordered" | "borderless" | "borderedProminent"
+	bold?: boolean;
+	disabled?: boolean;
 	action?: Function;
 	label: string;
 	flexGrow?: number;
@@ -25,6 +27,12 @@ export default class Button extends React.Component<{
 			padding: 0,
 			flexGrow: p.flexGrow,
 		};
+		if (p.bold) {
+			style.fontWeight = "bold";
+		}
+		if (p.disabled) {
+			style.opacity = 0.2;
+		}
 		switch (p.buttonStyle) {
 			case "bordered":
 				style.backgroundColor = "gray";
@@ -38,8 +46,8 @@ export default class Button extends React.Component<{
 				style.borderRadius = 4;
 				break;
 		}
-		return <button style={{...style, ...this.props.style}} onClick={e => {
-			if (p.action) {
+		return <button style={{ ...style, ...this.props.style }} onClick={e => {
+			if (p.action && !p.disabled) {
 				p.action();
 			}
 		}}>{p.label}</button>

@@ -6,6 +6,7 @@ import Spacer from "./Spacer";
 import { ViewProps } from "./ViewProps";
 import VStack from "./VStack";
 import Text from "./Text";
+import { SceneContext } from "./Scene";
 
 export const NavigationContext = React.createContext<{
 	push?: (content: React.ReactElement) => void;
@@ -17,14 +18,16 @@ export class NavigationView extends React.Component<{
 	children?: React.ReactElement<ViewProps>;
 }, {
 	stack: any[];
-	windowWidth: number;
+	width: number;
 }>{
+
+	root_ref = React.createRef<HTMLDivElement>();
 
 	constructor(p) {
 		super(p);
 		this.state = {
 			stack: [p.children],
-			windowWidth: 0,
+			width: 0,
 		}
 		this.push = this.push.bind(this);
 		this.pop = this.pop.bind(this);
@@ -42,7 +45,7 @@ export class NavigationView extends React.Component<{
 	}
 
 	onWindowResized() {
-		this.setState({ windowWidth: window.innerWidth });
+		this.setState({ width: this.root_ref.current.clientWidth });
 	}
 
 	push(view: React.ReactElement) {
@@ -72,7 +75,7 @@ export class NavigationView extends React.Component<{
 			style = Object.assign(style, p.style);
 		}
 
-		return <div className="NavigationView" style={style}>
+		return <div className="NavigationView" style={style} ref={this.root_ref}>
 			<NavigationContext.Provider value={{
 				push: this.push,
 				pop: this.pop,
@@ -86,7 +89,7 @@ export class NavigationView extends React.Component<{
 							zIndex={i}
 							variantName={variantName}
 							view={x}
-							windowWidth={s.windowWidth}
+							width={s.width}
 						/>
 					})}
 
@@ -99,14 +102,14 @@ export class NavigationView extends React.Component<{
 
 class Container extends React.Component<{
 	view: ViewProps;
-	windowWidth: number;
+	width: number;
 	variantName: string;
 	zIndex: number;
 }>{
 
 	render() {
 		const p = this.props;
-		const initX = this.props.windowWidth;
+		const initX = this.props.width;
 		return <motion.div
 			variants={{
 				"focus": { x: 0, filter: "brightness(1)" },
@@ -141,6 +144,19 @@ export class NavigationBar extends React.Component<{
 	title: string;
 }>{
 
+	static get cancelButton() {
+		return <SceneContext.Consumer>{context =>
+			<HStack style={{
+				color: "var(--key-color)"
+			}} onClick={e => {
+				context.dismiss()
+			}}>
+				<Text size={16}>Cancel</Text>
+			</HStack>
+
+		}</SceneContext.Consumer>
+	}
+
 	static get backButton() {
 		return <NavigationContext.Consumer>{context =>
 			<HStack style={{
@@ -168,6 +184,8 @@ export class NavigationBar extends React.Component<{
 
 			<VStack alignment={"center"} justifyContent={"center"} style={{
 				position: "absolute",
+				left:0,
+				top:0,
 				width: "100%",
 				height: "100%",
 				pointerEvents: "none",

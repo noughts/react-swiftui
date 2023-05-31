@@ -4,6 +4,14 @@ import { NavigationBar } from "@/components/NavigationView";
 
 
 export default class NavigationDemo extends React.Component {
+
+	componentDidMount(): void {
+		console.log("NavigationDemo didMount")
+	}
+	componentWillUnmount(): void {
+		console.log("NavigationDemo willUnMount")
+	}
+
 	render(): React.ReactNode {
 		return <NavigationView>
 			<Page1 />
@@ -22,10 +30,16 @@ class Page1 extends React.Component<ViewProps, {
 
 	constructor(p) {
 		super(p);
-		console.log("Page1 constructor")
 		this.state = {
 			counter: 0,
 		}
+	}
+
+	componentDidMount(): void {
+		console.log("Page1 didMount")
+	}
+	componentWillUnmount(): void {
+		console.log("Page1 willUnMount")
 	}
 
 	get postButton() {

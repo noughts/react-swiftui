@@ -7,51 +7,35 @@
 
 */
 
-import React, { CSSProperties, ReactNode } from "react";
+import React, { CSSProperties, ReactNode, useEffect, useState } from "react";
 import HStack from "./HStack";
 import TabItem from "./TabItem";
 import VStack from "./VStack";
 
-export default class TabView extends React.Component<{
-	items: TabItem[],
-	children?:ReactNode;
-}, {
-	selectedIndex: number;
-}>{
-
-	constructor(p) {
-		super(p);
-		this.state = {
-			selectedIndex: 0,
-		}
-	}
 
 
-	render() {
-		const selectedItem = this.props.items[this.state.selectedIndex];
-		return <div className="TabView" style={{ zIndex: 1, position: "relative" }}>
-			<VStack alignment={"stretch"} style={{
-				height: "calc(var(--vh, 1vh) * 100)",
-			}}>
-				<div style={{
-					flexGrow: 2,
-					overflow: "hidden"
-				}}>
-					{selectedItem.content}
-				</div>
-				<TabBar
-					items={this.props.items}
-					selectedIndex={this.state.selectedIndex}
-					onClick={e => {
-						this.setState({ selectedIndex: e });
-					}} />
-			</VStack>
-			{this.props.children}
-		</div>
-	}
+export const TabView: React.FC<{ items: TabItem[], children: ReactNode }> = ({ items, children }) => {
+	const [selectedIndex, setSelectedIndex] = useState(0);
+
+	return <div className="TabView" style={{ zIndex: 1, position: "relative" }}>
+		<VStack alignment={"stretch"} style={{
+			height: "calc(var(--vh, 1vh) * 100)",
+		}}>
+			{items.map((x, i) => {
+				const display = i == selectedIndex ? "block" : "none";
+				return <div key={i} style={{ flexGrow: 2, overflow: "hidden", display }}>{x.content}</div>
+			})}
+
+			<TabBar
+				items={items}
+				selectedIndex={selectedIndex}
+				onClick={e => {
+					setSelectedIndex(e);
+				}} />
+		</VStack>
+		{children}
+	</div>
 }
-
-
 
 
 
